@@ -24,10 +24,8 @@ if ballDirY == 0:
     ballDirY = -1
 
 def drawBall():
-    global ball_x
-    global ball_y
-    global ballDirY
-    global ballDirX
+    global ball_x, ball_y, ballDirX, ballDirY
+
     drawer.Circle(ball_x, ball_y, ball_size, "white")
     ball_x = ball_x + ballDirX
     ball_y = ball_y + ballDirY
@@ -38,29 +36,29 @@ def drawPlayer():
 
 
 def ballTouchPlayer():
-     global ball_x
-     global ball_y
-     global player_y
-     global player_x
-     global ballDirX
-     global ballDirY
+     global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
+
      if ball_x >= player_x and (ball_y <= player_y) and ball_y >= player_y - player_height:
         ballDirX *= -1
         ballDirY *= -1
 
 def ballTouchWall():
-    global ball_x
-    global ball_y
-    global ballDirX
-    global ballDirY
+    global ball_x, ball_y, ballDirX, ballDirY
 
     if ball_y >= drawer.height / 2 or ball_y <= -drawer.height / 2:
         ballDirY *= -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
-    if ball_x >= drawer.width / 2 or ball_x <= -drawer.width / 2:
+    if ball_x <= -drawer.width / 2:
         ballDirX *= -1
-        ball_x = min(max(ball_x, -drawer.width / 2), drawer.width / 2)
+        ball_x = -drawer.width / 2
+
+    if ball_x >= drawer.width / 2:
+        print("Ball left the right side!")
+        ball_x = 0
+        ball_y = 0
+        ballDirY = 0
+        ballDirX = 0
 
 def move_left():
     global player_y
