@@ -16,7 +16,7 @@ class Drawer:
         self.t.speed(speed)
         self.t.penup()
         self.width = scrnWidth
-        height = scrnHeight
+        self.height = scrnHeight
     def update(self):
         turtle.update()
 
