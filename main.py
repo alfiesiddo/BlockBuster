@@ -2,6 +2,14 @@ from Drawer import Drawer
 import turtle
 import random
 
+class Brick:
+    def __init__(self, brick_id):
+        self.id = brick_id
+        self.isHit = False
+
+    def UpdateValue(self, bool):
+        self.isHit = bool
+
 # Create screen and Drawer
 win = turtle.Screen()
 drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=720)
@@ -9,6 +17,9 @@ drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=720)
 # Object size
 player_width = 25
 player_height = 180
+
+brickHeight = drawer.height / 10
+brickWidth = brickHeight / 2
 
 ball_size = 25
 
@@ -22,6 +33,25 @@ ballDirX = 1
 ballDirY = random.randint(-1,1)
 if ballDirY == 0:
     ballDirY = -1
+
+brickColours = {
+    0 : "red",
+    1 : "blue",
+    2 : "BlueViolet",
+    3 : "orange",
+    4 : "green",
+    5 : "SpringGreen",
+    6 : "firebrick"
+}
+
+bricks = []
+
+for i in range(30):
+    bricks.append(Brick(i))
+
+#Game logic
+def drawBricks():
+    print("d")
 
 def drawBall():
     global ball_x, ball_y, ballDirX, ballDirY
