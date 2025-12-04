@@ -30,7 +30,7 @@ class Brick:
 
 # Create screen and Drawer
 win = turtle.Screen()
-drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=840)
+drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=900)
 
 # Object data
 player_width = 25
@@ -38,8 +38,8 @@ player_height = 120
 player_lives = 3
 player_score = 0
 
-brickHeight = drawer.height / 10
-brickWidth = brickHeight / 2
+brickHeight = drawer.height / 11
+brickWidth = brickHeight / 3
 ball_size = 25
 
 # Position Data
@@ -153,10 +153,10 @@ def drawText():
     scoreText = f"Score: {player_score}"
     livesText = f"Lives: {player_lives}"
     drawer.Text(
-            420, 360, 20, "Arial", "bold", "white", scoreText
+            420, 400, 20, "Arial", "bold", "white", scoreText
         )
     drawer.Text(
-            550, 360, 20, "Arial", "bold", "white", livesText
+            550, 400, 20, "Arial", "bold", "white", livesText
         )
 
     if ballDirX == 0 and ballDirY == 0 and player_lives > 0:
