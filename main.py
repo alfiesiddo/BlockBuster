@@ -20,8 +20,8 @@ class Brick:
     def Touched(self):
         global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
 
-        withinX = self.brickX <= ball_x - (ball_size / 2) <= self.brickX + brickWidth
-        withinY = self.brickY - brickHeight <= ball_y <= self.brickY
+        withinX = self.brickX <= ball_x - (ball_size) <= self.brickX + brickWidth
+        withinY = self.brickY - brickHeight <= ball_y - (ball_size) <= self.brickY
 
         if withinX and withinY and self.isHit == False:
             self.UpdateValue()
@@ -77,7 +77,7 @@ def generateBrickObjects():
 
     x = startX
     for col in range(3):
-        col = random.randint(0,6)
+        col = random.randint(0,9)
         y = startY
         for i in range(10):
             bricks.append(Brick(i, x, y, col))
@@ -109,6 +109,7 @@ def drawBall():
     
 def drawPlayer():
     drawer.Rect(player_x, player_y, player_height, player_width, "crimson")
+
 def ballTouchPlayer():
      global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
 
@@ -119,11 +120,11 @@ def ballTouchPlayer():
 def ballTouchWall():
     global ball_x, ball_y, ballDirX, ballDirY, player_lives, ball_size, player_y
 
-    if ball_y >= drawer.height / 2 or ball_y - (ball_size / 2) <= -drawer.height / 2:
+    if ball_y >= drawer.height / 2 or ball_y - ball_size <= -drawer.height / 2:
         ballDirY = (randY()) * -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
-    if ball_x <= -drawer.width / 2:
+    if ball_x + ball_size <= -drawer.width / 2:
         ballDirX *= -1
         ball_x = -drawer.width / 2
 
@@ -208,12 +209,12 @@ def gameUpdate():
 
 
 # BIND KEYS
-win.listen()
 win.onkeypress(move_left, "Left")
 win.onkeypress(move_right, "Right")
 win.onkeypress(move_left, "Down")
 win.onkeypress(move_right, "Up")
 win.onkeypress(restart, "space")
+win.listen()
 
 generateBrickObjects()
 
