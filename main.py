@@ -46,10 +46,13 @@ player_y = 0
 ball_x = drawer.width / 4
 ball_y = 0
 
-ballDirX = 3
-ballDirY = random.randint(-3,4)
-if ballDirY == 0:
-    ballDirY = random.randint(-3,4)
+defaultBallDirX = 4
+defaultBallDirY = random.randint(-1,2)
+if defaultBallDirY == 0:
+    defaultBallDirY = random.randint(-1,2)
+
+ballDirX = defaultBallDirX
+ballDirY = defaultBallDirY
 
 bricks = []
 brickColours = {
@@ -99,7 +102,7 @@ def drawBall():
     ball_y = ball_y + ballDirY
     
 def drawPlayer():
-    drawer.Rect(player_x, player_y, player_height, player_width, "purple")
+    drawer.Rect(player_x, player_y, player_height, player_width, "crimson")
 def ballTouchPlayer():
      global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
 
@@ -110,7 +113,7 @@ def ballTouchPlayer():
 def ballTouchWall():
     global ball_x, ball_y, ballDirX, ballDirY, player_lives, ball_size
 
-    if ball_y >= drawer.height / 2 or ball_y - (ball_size) <= -drawer.height / 2:
+    if ball_y >= drawer.height / 2 or ball_y - (ball_size / 2) <= -drawer.height / 2:
         ballDirY = (randY()) * -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
@@ -126,11 +129,16 @@ def ballTouchWall():
         player_lives = player_lives - 1
 
 def second_chance():
-    global ballDirY, ballDirX
+    global ballDirY, ballDirX, player_score, player_lives
 
     if ballDirX == 0 and ballDirY == 0 and player_lives != 0:
-        ballDirX = 3
-        ballDirY = randY()
+        ballDirX = defaultBallDirX
+        ballDirY = defaultBallDirY
+    elif ballDirX == 0 and ballDirY == 0 and player_lives == 0:
+        player_lives = 3
+        player_score = 0
+        ballDirX = defaultBallDirX
+        ballDirY = defaultBallDirY
 
 def move_left():
     global player_y
