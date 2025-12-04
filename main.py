@@ -15,7 +15,7 @@ class Brick:
         self.isHit = True
 
     def Touched(self):
-        global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
+        global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size, player_score
 
         withinX = self.brickX <= ball_x - (ball_size / 2) <= self.brickX + brickWidth
         withinY = self.brickY - brickHeight <= ball_y <= self.brickY
@@ -24,6 +24,7 @@ class Brick:
             self.UpdateValue()
             ballDirY = (randY()) * -1
             ballDirX *= -1
+            player_score = player_score + 1
 
 # Create screen and Drawer
 win = turtle.Screen()
@@ -31,7 +32,7 @@ drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=840)
 
 # Object data
 player_width = 25
-player_height = 180
+player_height = 120
 player_lives = 3
 player_score = 0
 
@@ -45,22 +46,24 @@ player_y = 0
 ball_x = drawer.width / 4
 ball_y = 0
 
-ballDirX = 2
+ballDirX = 3
 ballDirY = random.randint(-3,4)
 if ballDirY == 0:
     ballDirY = random.randint(-3,4)
 
 bricks = []
 brickColours = {
-    0 : "red",
-    1 : "blue",
-    2 : "BlueViolet",
-    3 : "orange",
-    4 : "green",
-    5 : "SpringGreen",
-    6 : "firebrick"
+    0: "red",
+    1: "blue",
+    2: "green",
+    3: "yellow",
+    4: "orange",
+    5: "purple",
+    6: "pink",
+    7: "cyan",
+    8: "magenta",
+    9: "lime"
 }
-
 #Game logic
 def generateBrickObjects():
     global bricks
@@ -105,9 +108,9 @@ def ballTouchPlayer():
         ballDirY = (randY()) * -1
 
 def ballTouchWall():
-    global ball_x, ball_y, ballDirX, ballDirY, player_lives
+    global ball_x, ball_y, ballDirX, ballDirY, player_lives, ball_size
 
-    if ball_y >= drawer.height / 2 or ball_y <= -drawer.height / 2:
+    if ball_y >= drawer.height / 2 or ball_y - (ball_size) <= -drawer.height / 2:
         ballDirY = (randY()) * -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
@@ -125,8 +128,8 @@ def ballTouchWall():
 def second_chance():
     global ballDirY, ballDirX
 
-    if ballDirX == 0 and ballDirY == 0:
-        ballDirX = 2
+    if ballDirX == 0 and ballDirY == 0 and player_lives != 0:
+        ballDirX = 3
         ballDirY = randY()
 
 def move_left():
