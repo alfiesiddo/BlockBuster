@@ -12,10 +12,12 @@ class Brick:
         self.col = col
 
     def UpdateValue(self):
+        global player_score
         self.isHit = True
+        player_score = player_score + 1
 
     def Touched(self):
-        global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size, player_score
+        global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
 
         withinX = self.brickX <= ball_x - (ball_size / 2) <= self.brickX + brickWidth
         withinY = self.brickY - brickHeight <= ball_y <= self.brickY
@@ -24,7 +26,7 @@ class Brick:
             self.UpdateValue()
             ballDirY = (randY()) * -1
             ballDirX *= -1
-            player_score = player_score + 1
+            
 
 # Create screen and Drawer
 win = turtle.Screen()
@@ -47,9 +49,7 @@ ball_x = drawer.width / 4
 ball_y = 0
 
 defaultBallDirX = 4
-defaultBallDirY = random.randint(-1,2)
-if defaultBallDirY == 0:
-    defaultBallDirY = random.randint(-1,2)
+defaultBallDirY = random.choice([-1, 1,])
 
 ballDirX = defaultBallDirX
 ballDirY = defaultBallDirY
@@ -111,7 +111,7 @@ def ballTouchPlayer():
         ballDirY = (randY()) * -1
 
 def ballTouchWall():
-    global ball_x, ball_y, ballDirX, ballDirY, player_lives, ball_size
+    global ball_x, ball_y, ballDirX, ballDirY, player_lives, ball_size, player_y
 
     if ball_y >= drawer.height / 2 or ball_y - (ball_size / 2) <= -drawer.height / 2:
         ballDirY = (randY()) * -1
@@ -126,6 +126,7 @@ def ballTouchWall():
         ball_y = 0
         ballDirY = 0
         ballDirX = 0
+        player_y = 0
         player_lives = player_lives - 1
 
 def second_chance():
@@ -160,11 +161,14 @@ def drawText():
 
     if ballDirX == 0 and ballDirY == 0 and player_lives > 0:
         drawer.Text(
-            0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Second Chance!"
+            0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Another Chance!"
         )
     elif ballDirX == 0 and ballDirY == 0 and player_lives <= 0:
         drawer.Text(
             0, 0, 30, "Arial", "bold", "red", "Game Over, You Lose!"
+        )
+        drawer.Text(
+            0, -50, 20, "Arial", "bold", "red", "Press Space to Restart"
         )
 def startUp():
     generateBrickObjects()
