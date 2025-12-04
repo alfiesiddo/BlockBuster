@@ -62,9 +62,9 @@ class Brick:
                 ball_y -= overlap_bottom
                 ballDirY *= -1
             
-
 # Create screen and Drawer
 win = turtle.Screen()
+win.title("Block Buster - Alfie Siddons")
 drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=900)
 
 # Object data
@@ -193,7 +193,6 @@ def restart():
         ballDirY = defaultBallDirY
         resetBricks()
 
-
 def move_left():
     global player_y
     player_y -= 50
@@ -227,8 +226,7 @@ def drawText():
         drawer.Text(
             0, -50, 20, "Arial", "bold", "red", "Press Space to Restart"
         )
-
-    
+ 
 def startUp():
     generateBrickObjects()
 
@@ -240,7 +238,6 @@ def gameUpdate():
     ballTouchWall()
     drawBricks()
     drawText()
-
 
 # BIND KEYS
 win.onkeypress(move_left, "Left")
