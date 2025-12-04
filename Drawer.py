@@ -68,6 +68,14 @@ class Drawer:
         self.t.end_fill()
         self.t.penup()
 
+    def Text(self, x, y, size, font, style, colour, text):
+        self.t.goto(x, y)
+        self.t.color(colour)
+        style = (font, size, style)
+        self.t.pendown()
+        self.t.write(text, font=style, align="center")
+        self.t.penup()
+
     def Triangle(self, x, y, size, colour):
         self.t.goto(x + (x * 1.5), y)
         self.t.color(colour)

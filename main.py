@@ -22,7 +22,7 @@ class Brick:
 
         if withinX and withinY and self.isHit == False:
             self.UpdateValue()
-            ballDirY = (ballDirY + randY()) * -1
+            ballDirY = (randY()) * -1
             ballDirX *= -1
 
 # Create screen and Drawer
@@ -95,20 +95,25 @@ def drawBall():
     
 def drawPlayer():
     drawer.Rect(player_x, player_y, player_height, player_width, "purple")
-    print("Player Y: ", player_y)
+
+    if ballDirX == 0 and ballDirY == 0:
+        drawer.Text(
+            0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Second Chance!"
+        )
+
 
 def ballTouchPlayer():
      global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
 
      if ball_x >= player_x and (ball_y <= player_y) and ball_y >= player_y - player_height:
         ballDirX *= -1
-        ballDirY = (ballDirY + randY()) * -1
+        ballDirY = (randY()) * -1
 
 def ballTouchWall():
     global ball_x, ball_y, ballDirX, ballDirY
 
     if ball_y >= drawer.height / 2 or ball_y <= -drawer.height / 2:
-        ballDirY = (ballDirY + randY()) * -1
+        ballDirY = (randY()) * -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
     if ball_x <= -drawer.width / 2:
@@ -116,7 +121,6 @@ def ballTouchWall():
         ball_x = -drawer.width / 2
 
     if ball_x >= drawer.width / 2:
-        print("Ball left the right side!")
         ball_x = 0
         ball_y = 0
         ballDirY = 0
