@@ -3,16 +3,20 @@ import turtle
 import random
 
 class Brick:
-    def __init__(self, brick_id):
+    
+    def __init__(self, brick_id, X, Y, col):
         self.id = brick_id
         self.isHit = False
+        self.brickX = X
+        self.brickY = Y
+        self.col =  col
 
     def UpdateValue(self, bool):
         self.isHit = bool
 
 # Create screen and Drawer
 win = turtle.Screen()
-drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=720)
+drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=840)
 
 # Object size
 player_width = 25
@@ -34,6 +38,7 @@ ballDirY = random.randint(-1,1)
 if ballDirY == 0:
     ballDirY = -1
 
+bricks = []
 brickColours = {
     0 : "red",
     1 : "blue",
@@ -44,14 +49,27 @@ brickColours = {
     6 : "firebrick"
 }
 
-bricks = []
+def generateBrickObjects():
+    global bricks
 
-for i in range(30):
-    bricks.append(Brick(i))
+    startX = -(drawer.width / 2) + 5
+    startY = drawer.height / 2
+
+    x = startX
+    for col in range(3):
+        col = random.randint(0,6)
+        y = startY
+        for i in range(10):
+            bricks.append(Brick(i, x, y, col))
+            y -= brickHeight + 10  
+        x += brickWidth + 10
 
 #Game logic
 def drawBricks():
-    print("d")
+    global brickHeight, brickWidth, bricks
+    for brick in bricks:
+        drawer.Rect(brick.brickX, brick.brickY, brickHeight, brickWidth, brickColours[brick.col])
+
 
 def drawBall():
     global ball_x, ball_y, ballDirX, ballDirY
@@ -99,17 +117,24 @@ def move_right():
     player_y += 50
 
 
+def startUp():
+    generateBrickObjects()
+
 def gameUpdate():
     drawer.clearScreen()
     drawBall()
     drawPlayer()
     ballTouchPlayer()
     ballTouchWall()
+    drawBricks()
 
 
 # BIND KEYS
 win.listen()
 win.onkeypress(move_left, "Left")
 win.onkeypress(move_right, "Right")
+
+generateBrickObjects()
+
 while True:
     gameUpdate()
