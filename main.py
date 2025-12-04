@@ -9,10 +9,20 @@ class Brick:
         self.isHit = False
         self.brickX = X
         self.brickY = Y
-        self.col =  col
+        self.col = col
 
-    def UpdateValue(self, bool):
-        self.isHit = bool
+    def UpdateValue(self):
+        self.isHit = True
+
+    def Touched(self):
+        global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
+
+        withinX = self.brickX <= ball_x - (ball_size / 2) <= self.brickX + brickWidth
+        withinY = self.brickY - brickHeight <= ball_y <= self.brickY
+
+        if withinX and withinY and self.isHit == False:
+            self.UpdateValue()
+            ballDirX *= -1
 
 # Create screen and Drawer
 win = turtle.Screen()
@@ -24,7 +34,6 @@ player_height = 180
 
 brickHeight = drawer.height / 10
 brickWidth = brickHeight / 2
-
 ball_size = 25
 
 # Position Data
@@ -33,10 +42,10 @@ player_y = 0
 ball_x = drawer.width / 4
 ball_y = 0
 
-ballDirX = 1
-ballDirY = random.randint(-1,1)
+ballDirX = 2
+ballDirY = random.randint(-3,4)
 if ballDirY == 0:
-    ballDirY = -1
+    ballDirY = random.randint(-3,4)
 
 bricks = []
 brickColours = {
@@ -68,8 +77,9 @@ def generateBrickObjects():
 def drawBricks():
     global brickHeight, brickWidth, bricks
     for brick in bricks:
-        drawer.Rect(brick.brickX, brick.brickY, brickHeight, brickWidth, brickColours[brick.col])
-
+        brick.Touched()
+        if(brick.isHit == False):
+            drawer.Rect(brick.brickX, brick.brickY, brickHeight, brickWidth, brickColours[brick.col])
 
 def drawBall():
     global ball_x, ball_y, ballDirX, ballDirY
@@ -81,7 +91,6 @@ def drawBall():
 def drawPlayer():
     drawer.Rect(player_x, player_y, player_height, player_width, "purple")
     print("Player Y: ", player_y)
-
 
 def ballTouchPlayer():
      global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
