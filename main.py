@@ -21,7 +21,7 @@ class Brick:
         global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
 
         withinX = self.brickX <= ball_x - (ball_size) <= self.brickX + brickWidth
-        withinY = self.brickY - brickHeight <= ball_y - (ball_size) <= self.brickY
+        withinY = self.brickY - brickHeight <= ball_y <= self.brickY
 
         if withinX and withinY and self.isHit == False:
             self.UpdateValue()
