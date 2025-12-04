@@ -129,13 +129,23 @@ def ballTouchWall():
         player_y = 0
         player_lives = player_lives - 1
 
-def second_chance():
+def checkWin():
+    global ballDirX, ballDirY
+
+    if player_score >= 30 and player_lives != 0:
+        ballDirX = 0
+        ballDirY = 0
+        return True
+    else:
+        return False
+
+def restart():
     global ballDirY, ballDirX, player_score, player_lives
 
     if ballDirX == 0 and ballDirY == 0 and player_lives != 0:
         ballDirX = defaultBallDirX
         ballDirY = defaultBallDirY
-    elif ballDirX == 0 and ballDirY == 0 and player_lives == 0:
+    elif ballDirX == 0 and ballDirY == 0 and player_lives == 0 or player_score == 30:
         player_lives = 3
         player_score = 0
         ballDirX = defaultBallDirX
@@ -158,8 +168,12 @@ def drawText():
     drawer.Text(
             550, 400, 20, "Arial", "bold", "white", livesText
         )
-
-    if ballDirX == 0 and ballDirY == 0 and player_lives > 0:
+    
+    if checkWin():
+        drawer.Text(
+            0, 0, 30, "Arial", "bold", "green", "Game Over, You Won!"
+        )
+    elif ballDirX == 0 and ballDirY == 0 and player_lives > 0:
         drawer.Text(
             0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Another Chance!"
         )
@@ -170,6 +184,8 @@ def drawText():
         drawer.Text(
             0, -50, 20, "Arial", "bold", "red", "Press Space to Restart"
         )
+
+    
 def startUp():
     generateBrickObjects()
 
@@ -187,7 +203,7 @@ def gameUpdate():
 win.listen()
 win.onkeypress(move_left, "Left")
 win.onkeypress(move_right, "Right")
-win.onkeypress(second_chance, "space")
+win.onkeypress(restart, "space")
 
 generateBrickObjects()
 
