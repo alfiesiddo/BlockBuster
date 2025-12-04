@@ -203,6 +203,8 @@ def gameUpdate():
 win.listen()
 win.onkeypress(move_left, "Left")
 win.onkeypress(move_right, "Right")
+win.onkeypress(move_left, "Down")
+win.onkeypress(move_right, "Up")
 win.onkeypress(restart, "space")
 
 generateBrickObjects()
