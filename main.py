@@ -15,7 +15,8 @@ class Brick:
         global player_score
         self.isHit = True
         player_score = player_score + 1
-
+    def Reset(self):
+        self.isHit = False
     def Touched(self):
         global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
 
@@ -93,6 +94,11 @@ def drawBricks():
         brick.Touched()
         if(brick.isHit == False):
             drawer.Rect(brick.brickX, brick.brickY, brickHeight, brickWidth, brickColours[brick.col])
+def resetBricks():
+    global bricks
+
+    for brick in bricks:
+        brick.Reset()
 
 def drawBall():
     global ball_x, ball_y, ballDirX, ballDirY
@@ -130,7 +136,7 @@ def ballTouchWall():
         player_lives = player_lives - 1
 
 def checkWin():
-    global ballDirX, ballDirY
+    global ballDirX, ballDirY, bricks
 
     if player_score >= 30 and player_lives != 0:
         ballDirX = 0
@@ -145,11 +151,13 @@ def restart():
     if ballDirX == 0 and ballDirY == 0 and player_lives != 0:
         ballDirX = defaultBallDirX
         ballDirY = defaultBallDirY
-    elif ballDirX == 0 and ballDirY == 0 and player_lives == 0 or player_score == 30:
+    elif ballDirX == 0 and ballDirY == 0 and player_lives == 0 or player_score >=30:
         player_lives = 3
         player_score = 0
         ballDirX = defaultBallDirX
         ballDirY = defaultBallDirY
+        resetBricks()
+
 
 def move_left():
     global player_y
