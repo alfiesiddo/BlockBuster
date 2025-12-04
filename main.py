@@ -17,16 +17,50 @@ class Brick:
         player_score = player_score + 1
     def Reset(self):
         self.isHit = False
+    
     def Touched(self):
         global ball_x, ball_y, ballDirX, ballDirY, brickHeight, brickWidth, ball_size
 
-        withinX = self.brickX <= ball_x - (ball_size) <= self.brickX + brickWidth
-        withinY = self.brickY - brickHeight <= ball_y <= self.brickY
+        # Ball bounds
+        ballLeft = ball_x - ball_size
+        ballRight = ball_x + ball_size
+        ballTop = ball_y + ball_size
+        ballBottom = ball_y - ball_size
 
-        if withinX and withinY and self.isHit == False:
+        # Brick bounds
+        brickLeft = self.brickX
+        brickRight = self.brickX + brickWidth
+        brickTop = self.brickY
+        brickBottom = self.brickY - brickHeight
+
+        # AABB collision detection
+        if not self.isHit and (
+            ballRight > brickLeft and
+            ballLeft < brickRight and
+            ballTop > brickBottom and
+            ballBottom < brickTop
+        ):
             self.UpdateValue()
-            ballDirY = (randY()) * -1
-            ballDirX *= -1
+
+            overlap_left = ballRight - brickLeft
+            overlap_right = brickRight - ballLeft
+            overlap_top = brickTop - ballBottom
+            overlap_bottom = ballTop - brickBottom
+
+            min_overlap = min(overlap_left, overlap_right, overlap_top, overlap_bottom)
+
+            if min_overlap == overlap_left:      
+                ball_x -= overlap_left
+                ballDirX *= -1
+            elif min_overlap == overlap_right: 
+                ball_x += overlap_right
+                ballDirX *= -1
+            elif min_overlap == overlap_top:  
+                ball_y += overlap_top
+                ballDirY *= -1
+            elif min_overlap == overlap_bottom: 
+                ball_y -= overlap_bottom
+                ballDirY *= -1
             
 
 # Create screen and Drawer
