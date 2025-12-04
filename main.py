@@ -122,6 +122,13 @@ def ballTouchWall():
         ballDirY = 0
         ballDirX = 0
 
+def second_chance():
+    global ballDirY, ballDirX
+
+    if ballDirX == 0 and ballDirY == 0:
+        ballDirX = 2
+        ballDirY = randY()
+
 def move_left():
     global player_y
     player_y -= 50
@@ -147,6 +154,7 @@ def gameUpdate():
 win.listen()
 win.onkeypress(move_left, "Left")
 win.onkeypress(move_right, "Right")
+win.onkeypress(second_chance, "space")
 
 generateBrickObjects()
 
