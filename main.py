@@ -29,9 +29,11 @@ class Brick:
 win = turtle.Screen()
 drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=840)
 
-# Object size
+# Object data
 player_width = 25
 player_height = 180
+player_lives = 3
+player_score = 0
 
 brickHeight = drawer.height / 10
 brickWidth = brickHeight / 2
@@ -59,6 +61,7 @@ brickColours = {
     6 : "firebrick"
 }
 
+#Game logic
 def generateBrickObjects():
     global bricks
 
@@ -74,7 +77,6 @@ def generateBrickObjects():
             y -= brickHeight + 10  
         x += brickWidth + 10
 
-#Game logic
 def  randY():
     num = random.choice([-2, -1, 1, 2])
     return num
@@ -95,13 +97,6 @@ def drawBall():
     
 def drawPlayer():
     drawer.Rect(player_x, player_y, player_height, player_width, "purple")
-
-    if ballDirX == 0 and ballDirY == 0:
-        drawer.Text(
-            0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Second Chance!"
-        )
-
-
 def ballTouchPlayer():
      global ball_x, ball_y, player_y, player_x, ballDirY, ballDirX
 
@@ -110,7 +105,7 @@ def ballTouchPlayer():
         ballDirY = (randY()) * -1
 
 def ballTouchWall():
-    global ball_x, ball_y, ballDirX, ballDirY
+    global ball_x, ball_y, ballDirX, ballDirY, player_lives
 
     if ball_y >= drawer.height / 2 or ball_y <= -drawer.height / 2:
         ballDirY = (randY()) * -1
@@ -125,6 +120,7 @@ def ballTouchWall():
         ball_y = 0
         ballDirY = 0
         ballDirX = 0
+        player_lives = player_lives - 1
 
 def second_chance():
     global ballDirY, ballDirX
@@ -141,7 +137,24 @@ def move_right():
     global player_y
     player_y += 50
 
+def drawText():
+    scoreText = f"Score: {player_score}"
+    livesText = f"Lives: {player_lives}"
+    drawer.Text(
+            420, 360, 20, "Arial", "bold", "white", scoreText
+        )
+    drawer.Text(
+            550, 360, 20, "Arial", "bold", "white", livesText
+        )
 
+    if ballDirX == 0 and ballDirY == 0 and player_lives > 0:
+        drawer.Text(
+            0, 0, 30, "Arial", "bold", "yellow", "Press Space for a Second Chance!"
+        )
+    elif ballDirX == 0 and ballDirY == 0 and player_lives <= 0:
+        drawer.Text(
+            0, 0, 30, "Arial", "bold", "red", "Game Over, You Lose!"
+        )
 def startUp():
     generateBrickObjects()
 
@@ -152,6 +165,7 @@ def gameUpdate():
     ballTouchPlayer()
     ballTouchWall()
     drawBricks()
+    drawText()
 
 
 # BIND KEYS
