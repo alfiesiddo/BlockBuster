@@ -22,6 +22,7 @@ class Brick:
 
         if withinX and withinY and self.isHit == False:
             self.UpdateValue()
+            ballDirY = (ballDirY + randY()) * -1
             ballDirX *= -1
 
 # Create screen and Drawer
@@ -74,6 +75,10 @@ def generateBrickObjects():
         x += brickWidth + 10
 
 #Game logic
+def  randY():
+    num = random.choice([-2, -1, 1, 2])
+    return num
+
 def drawBricks():
     global brickHeight, brickWidth, bricks
     for brick in bricks:
@@ -97,13 +102,13 @@ def ballTouchPlayer():
 
      if ball_x >= player_x and (ball_y <= player_y) and ball_y >= player_y - player_height:
         ballDirX *= -1
-        ballDirY *= -1
+        ballDirY = (ballDirY + randY()) * -1
 
 def ballTouchWall():
     global ball_x, ball_y, ballDirX, ballDirY
 
     if ball_y >= drawer.height / 2 or ball_y <= -drawer.height / 2:
-        ballDirY *= -1
+        ballDirY = (ballDirY + randY()) * -1
         ball_y = min(max(ball_y, -drawer.height / 2), drawer.height / 2)
 
     if ball_x <= -drawer.width / 2:
