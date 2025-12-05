@@ -71,7 +71,7 @@ drawer = Drawer(bckgColour="black", scrnWidth=1280, scrnHeight=900)
 player_width = 25
 player_height = 120
 player_lives = 3
-player_score = 15
+player_score = 0
 
 brickHeight = drawer.height / 11
 brickWidth = brickHeight / 3
@@ -189,7 +189,7 @@ def restart():
             ballDirX = -defaultBallDirX
         else:
             ballDirX = defaultBallDirX
-            
+
         ballDirY = defaultBallDirY
     elif ballDirX == 0 and ballDirY == 0 and player_lives == 0 or player_score >=30:
         player_lives = 3
