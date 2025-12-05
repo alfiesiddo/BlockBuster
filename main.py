@@ -184,7 +184,7 @@ def restart():
     global ballDirY, ballDirX, player_score, player_lives
 
     if ballDirX == 0 and ballDirY == 0 and player_lives != 0:
-        ballDirX = defaultBallDirX
+        ballDirX = defaultBallDirX * -1
         ballDirY = defaultBallDirY
     elif ballDirX == 0 and ballDirY == 0 and player_lives == 0 or player_score >=30:
         player_lives = 3
